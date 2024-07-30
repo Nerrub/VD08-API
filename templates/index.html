@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Случайные цитаты</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="quote-container">
+        <h1>Случайные цитаты</h1>
+        <div class="quote" id="quote">Загрузка цитаты...</div>
+        <div class="author" id="author"></div>
+        <button class="new-quote-button" onclick="fetchQuote()">Новая цитата</button>
+    </div>
+    <script>
+        async function fetchQuote() {
+            try {
+                const response = await fetch('/quote');
+                const data = await response.json();
+                document.getElementById('quote').innerText = data.content;
+                document.getElementById('author').innerText = `- ${data.author}`;
+            } catch (error) {
+                document.getElementById('quote').innerText = 'Не удалось загрузить цитату.';
+                document.getElementById('author').innerText = '';
+            }
+        }
+
+        // Fetch a quote when the page loads
+        window.onload = fetchQuote;
+    </script>
+</body>
+</html>
